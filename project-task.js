@@ -37,13 +37,42 @@ Create a function `filterProducts` that accepts:
 
 The callback should determine which products to include.
 Example: filter by availability or price threshold.
-
-Step-by-Step:
-1. Define the `filterProducts` function with appropriate parameters.
-2. Use the `filter()` method to apply the callback to the array.
-3. Return the filtered result.
 */
+//Step-by-Step:
+//1. Define the `filterProducts` function with appropriate parameters.
+//2. Use the `filter()` method to apply the callback to the array.
+//3. Return the filtered result.  
 
+
+function filterProducts(products, callback) {
+  let filtered = products.filter(callback);
+
+
+    return filtered;
+}
+
+// is in stock inStock = true
+let isInStock = filterProducts(products, product => product.inStock); 
+
+// price is below 500
+let isBelow500 = filterProducts(products, product => product.price < 500);
+
+
+//console.log(isInStock);
+//console.log(isBelow500);
+
+
+//can set parameter for price searches
+function isBelow(num) {
+  return products.filter(item => item.price < num);
+}
+
+function isAbove(num){
+  return products.filter(item => item.price > num);
+}
+
+//console.log(isBelow(800));
+//console.log(isAbove(300));
 
 /*
 🔹 Task 2: Transform Product Names
@@ -55,6 +84,10 @@ Step-by-Step:
 2. Extract and transform the `name` property to uppercase.
 3. Store the result in a new variable.
 */
+
+let uppercase = products.map(product => product.name.toUpperCase());
+
+//console.log(uppercase);
 
 
 /*
@@ -69,7 +102,20 @@ Step-by-Step:
 2. Return a new function that takes a product object.
 3. Use this returned function inside a `map()` call to apply discounts to all products.
 */
+function applyDiscount(discountPercent) {
+  return function (product) {
+    let discountedPrice = product.price -(product.price * (discountPercent/100));
+    return {
+      ... product,  
+      price: discountedPrice //for every price in the array, put the discount price
+    };
+  };
+}
 
+let tenPercent = applyDiscount(10);
+let discountedProducts = products.map(tenPercent);
+
+//console.log(discountedProducts);
 
 /*
 🔹 Task 4: Calculate Total Inventory Value
@@ -83,11 +129,19 @@ Step-by-Step:
 */
 
 
+let totalInventoryValue = isInStock.reduce((total, product) => {
+ return total + product.price;
+}, 0);
+
+//console.log(totalInventoryValue);
+
+
 // ============================================
 // 🧪 Console Test Your Work
 // ============================================
 
-// console.log("Filtered products:", ...);
-// console.log("Uppercased names:", ...);
-// console.log("Discounted products:", ...);
-// console.log("Total value in stock:", ...);
+console.log("Filtered products:", isInStock);
+console.log("Filtered products:", isBelow500)
+console.log("Uppercased names:", uppercase);
+console.log("Discounted products:", discountedProducts);
+console.log("Total value in stock:", totalInventoryValue);
